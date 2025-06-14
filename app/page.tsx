@@ -1,13 +1,16 @@
+// pages/index.tsx
 'use client'
 
 import { useEffect, useState } from 'react'
+import axios from 'axios'
 import { ProductCard } from '@/components/ProductCard'
+import { Header } from '@/components/Header'
 
 export default function Home() {
   const [products, setProducts] = useState([])
 
   useEffect(() => {
-    fetch('/data/products.json')
+    fetch('/data/products.json') // ou axios.get si tu appelles une API
       .then(res => res.json())
       .then(setProducts)
   }, [])
@@ -17,10 +20,13 @@ export default function Home() {
   }
 
   return (
-    <main className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-      {products.map((p: any) => (
-        <ProductCard key={p._id} product={p} onAddToCart={handleAddToCart} />
-      ))}
-    </main>
+    <>
+      <Header />
+      <main className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        {products.map((p: any) => (
+          <ProductCard key={p._id} product={p} onAddToCart={handleAddToCart} />
+        ))}
+      </main>
+    </>
   )
 }
