@@ -1,0 +1,21 @@
+[
+    {
+      "_id": "1",
+      "name": "Tomates fraîches",
+      "description": "Tomates rouges bien mûres de Madagascar.",
+      "price": 1500
+    },
+    {
+      "_id": "2",
+      "name": "Carottes bio",
+      "description": "Carottes douces cultivées localement.",
+      "price": 2000
+    },
+    {
+      "_id": "3",
+      "name": "Pommes de terre",
+      "description": "Idéal pour les frites ou purées.",
+      "price": 1800
+    }
+  ]
+  
