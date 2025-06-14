@@ -11,22 +11,22 @@ export default function AjouterProduit() {
   const [message, setMessage] = useState('')
   const [token, setToken] = useState('')
 
-//   useEffect(() => {
-//     const storedToken = localStorage.getItem('token')
-//     const user = localStorage.getItem('user')
-//     if (!storedToken || !user) {
-//       router.push('/login')
-//       return
-//     }
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token')
+    const user = localStorage.getItem('user')
+    if (!storedToken || !user) {
+      router.push('/login')
+      return
+    }
 
-//     const parsedUser = JSON.parse(user)
-//     if (parsedUser.role !== 'vendeur') {
-//       router.push('/')
-//       return
-//     }
+    const parsedUser = JSON.parse(user)
+    if (parsedUser.role !== 'vendeur') {
+      router.push('/')
+      return
+    }
 
-//     setToken(storedToken)
-//   }, [router])
+    setToken(storedToken)
+  }, [router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
