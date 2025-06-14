@@ -3,10 +3,11 @@
 import { useCart } from '@/context/CartContext'
 
 export default function PanierPage() {
-  const { cart, removeFromCart } = useCart()
+  const { cart, removeFromCart, updateQuantity } = useCart()
 
-  const handleRemove = (id: string) => {
-    removeFromCart(id)
+  const handleChangeQuantity = (id: string, quantity: number) => {
+    if (quantity < 1) return
+    updateQuantity(id, quantity)
   }
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
@@ -23,10 +24,21 @@ export default function PanierPage() {
               <li key={item._id} className="py-4 flex justify-between items-center">
                 <div>
                   <h2 className="font-semibold">{item.name}</h2>
-                  <p>{item.price} Ar × {item.quantity}</p>
+                  <p>{item.price} Ar</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <label htmlFor={`qte-${item._id}`} className="text-sm">Quantité:</label>
+                    <input
+                      id={`qte-${item._id}`}
+                      type="number"
+                      value={item.quantity}
+                      min={1}
+                      onChange={(e) => handleChangeQuantity(item._id, parseInt(e.target.value))}
+                      className="w-16 border rounded px-2 py-1"
+                    />
+                  </div>
                 </div>
                 <button
-                  onClick={() => handleRemove(item._id)}
+                  onClick={() => removeFromCart(item._id)}
                   className="text-red-500 hover:underline"
                 >
                   Supprimer

@@ -8,6 +8,7 @@ type CartContextType = {
   addToCart: (item: CartItem) => void
   removeFromCart: (id: string) => void
   updateCart: () => void
+  updateQuantity: (id: string, quantity: number) => void // ✅ AJOUT ICI
 }
 
 const CartContext = createContext<CartContextType | null>(null)
@@ -34,8 +35,17 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     updateCart()
   }
 
+  const updateQuantity = (id: string, quantity: number) => {
+    const currentCart = getCart()
+    const updatedCart = currentCart.map(item =>
+      item._id === id ? { ...item, quantity } : item
+    )
+    localStorage.setItem('my-cart', JSON.stringify(updatedCart))
+    updateCart()
+  }
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateCart, updateQuantity  }}>
       {children}
     </CartContext.Provider>
   )
