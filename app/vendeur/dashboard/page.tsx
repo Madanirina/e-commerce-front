@@ -49,7 +49,7 @@ export default function VendeurDashboard() {
 
       <button
         className="mb-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        onClick={() => router.push('/vendeur/produit/ajouter')}
+        onClick={() => router.push('/vendeur/produit')}
       >
         ➕ Ajouter un produit
       </button>
