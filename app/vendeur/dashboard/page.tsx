@@ -20,18 +20,39 @@ export default function VendeurDashboard() {
   })
 
   useEffect(() => {
-    fetch('/data/products.json') // ✅ Chemin correct
-      .then(res => res.json())
-      .then(data => setProducts(data))
-      .catch(err => console.error('Erreur chargement produits :', err))
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch('/data/products.json')
+        const staticProducts = await res.json()
+  
+        const localProducts = JSON.parse(localStorage.getItem('new-products') || '[]')
+  
+        setProducts([...staticProducts, ...localProducts])
+      } catch (err) {
+        console.error('Erreur chargement produits :', err)
+      }
+    }
+  
+    fetchProducts()
   }, [])
 
   // Supprimer un produit
   const handleDelete = (id: string) => {
     if (!confirm('Supprimer ce produit ?')) return
-    setProducts(products.filter(p => p._id !== id))
+  
+    // 1. Supprimer du state
+    const updated = products.filter(p => p._id !== id)
+    setProducts(updated)
+  
+    // 2. Supprimer du localStorage si le produit y est
+    const stored = JSON.parse(localStorage.getItem('new-products') || '[]')
+    const filteredStored = stored.filter((p: any) => p._id !== id)
+    localStorage.setItem('new-products', JSON.stringify(filteredStored))
+  
+    // 3. Si c'était en cours d'édition
     if (editProductId === id) setEditProductId(null)
   }
+  
 
   // Démarrer modification produit
   const startEdit = (product: Product) => {
@@ -55,18 +76,28 @@ export default function VendeurDashboard() {
   }
 
   // Ajouter nouveau produit
-  const handleAdd = () => {
+  const handleAdd = () => { 
     if (!newProductForm.name || !newProductForm.price) {
       alert('Nom et prix requis')
       return
     }
+  
     const newProduct: Product = {
       _id: Date.now().toString(),
       ...newProductForm,
     }
+  
+    // 1. Mise à jour de l'état local
     setProducts([...products, newProduct])
+  
+    // 2. Stockage dans localStorage
+    const existing = JSON.parse(localStorage.getItem('new-products') || '[]')
+    localStorage.setItem('new-products', JSON.stringify([...existing, newProduct]))
+  
+    // 3. Réinitialisation du formulaire
     setNewProductForm({ name: '', description: '', price: 0 })
   }
+  
 
   return (
     <main className="p-6 max-w-3xl mx-auto">
