@@ -26,6 +26,9 @@ export const Header = () => {
             </span>
           )}
         </Link>
+        <Link href="/login" className="text-gray-700 hover:text-blue-500">
+          🔐 Se connecter
+        </Link>
       </nav>
     </header>
   )
