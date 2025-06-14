@@ -1,10 +1,8 @@
-// pages/index.tsx
 'use client'
 
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { ProductCard } from '@/components/ProductCard'
-import { Header } from '@/components/Header'
 
 export default function Home() {
   const [products, setProducts] = useState([])
@@ -21,7 +19,6 @@ export default function Home() {
 
   return (
     <>
-      <Header />
       <main className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
         {products.map((p: any) => (
           <ProductCard key={p._id} product={p} onAddToCart={handleAddToCart} />
