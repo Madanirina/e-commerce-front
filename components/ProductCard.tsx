@@ -1,26 +1,19 @@
-import React from 'react'
+// components/ProductCard.tsx
+'use client'
 
-interface Product {
-  _id: string
-  name: string
-  description: string
-  price: number
-}
+import { useCart } from '@/context/CartContext'
 
-interface Props {
-  product: Product
-  onAddToCart?: (product: Product) => void
-}
+export const ProductCard = ({ product }: { product: any }) => {
+  const { addToCart } = useCart()
 
-export const ProductCard: React.FC<Props> = ({ product, onAddToCart }) => {
   return (
-    <div className="border rounded p-4 shadow bg-white hover:shadow-lg transition">
-      <h2 className="text-xl font-semibold">{product.name}</h2>
-      <p className="text-sm text-gray-600 my-2">{product.description}</p>
-      <p className="text-green-600 font-bold mb-2">{product.price} Ar</p>
+    <div className="border p-4 rounded bg-white shadow">
+      <h2 className="text-lg font-semibold mb-2">{product.name}</h2>
+      <p className="text-gray-600">{product.description}</p>
+      <p className="font-bold mt-2">{product.price} Ar</p>
       <button
-        onClick={() => onAddToCart?.(product)}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        onClick={() => addToCart({ ...product, quantity: 1 })}
+        className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
       >
         Ajouter au panier
       </button>

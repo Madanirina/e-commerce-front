@@ -2,17 +2,11 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { getCart } from '@/lib/cart'
+import { useCart } from '@/context/CartContext'
 
 export const Header = () => {
-  const [cartCount, setCartCount] = useState(0)
-
-  useEffect(() => {
-    const cart = getCart()
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0)
-    setCartCount(totalItems)
-  }, [])
+  const { cart } = useCart()
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0)
 
   return (
     <header className="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-10">
@@ -26,9 +20,9 @@ export const Header = () => {
         </Link>
         <Link href="/panier" className="text-gray-700 hover:underline relative">
           Panier
-          {cartCount > 0 && (
+          {totalItems > 0 && (
             <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
-              {cartCount}
+              {totalItems}
             </span>
           )}
         </Link>
