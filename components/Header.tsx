@@ -1,4 +1,3 @@
-// components/Header.tsx
 'use client'
 
 import Link from 'next/link'
@@ -9,16 +8,28 @@ import router from 'next/router'
 export const Header = () => {
   const { cart } = useCart()
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0)
+
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [userName, setUserName] = useState('')
 
   useEffect(() => {
-    // Vérifie la présence du token
     const token = localStorage.getItem('token')
+    const user = localStorage.getItem('user')
     setIsLoggedIn(!!token)
+
+    if (user) {
+      try {
+        const parsed = JSON.parse(user)
+        setUserName(parsed.name || '')
+      } catch (err) {
+        console.error('Erreur lors du parsing de user')
+      }
+    }
   }, [])
 
   const handleLogout = () => {
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
     setIsLoggedIn(false)
     router.push('/')
   }
@@ -29,10 +40,11 @@ export const Header = () => {
         🛍️ E-Marketou
       </Link>
 
-      <nav className="space-x-4">
+      <nav className="space-x-4 flex items-center">
         <Link href="/" className="text-gray-700 hover:underline">
           Accueil
         </Link>
+
         <Link href="/panier" className="text-gray-700 hover:underline relative">
           Panier
           {totalItems > 0 && (
@@ -41,17 +53,28 @@ export const Header = () => {
             </span>
           )}
         </Link>
-        {isLoggedIn ? (
-          <button
-            onClick={handleLogout}
-            className="text-red-600 hover:underline"
-          >
-            🔓 Déconnexion
-          </button>
+
+        {!isLoggedIn ? (
+          <>
+            <Link href="/login" className="text-gray-700 hover:text-blue-500">
+              🔐 Se connecter
+            </Link>
+            <Link href="/register" className="text-gray-700 hover:text-blue-500">
+              📝 S’inscrire
+            </Link>
+          </>
         ) : (
-          <Link href="/login" className="text-gray-700 hover:text-blue-500">
-            🔐 Se connecter
-          </Link>
+          <>
+            {userName && (
+              <span className="text-gray-600">👤 {userName}</span>
+            )}
+            <button
+              onClick={handleLogout}
+              className="text-red-600 hover:underline"
+            >
+              🔓 Déconnexion
+            </button>
+          </>
         )}
       </nav>
     </header>
