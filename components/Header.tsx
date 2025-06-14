@@ -26,7 +26,7 @@ export const Header = () => {
   return (
     <header className="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-10">
       <Link href="/" className="text-xl font-bold text-blue-600">
-        🛍️ E-Commerce
+        🛍️ E-Marketou
       </Link>
 
       <nav className="space-x-4">
