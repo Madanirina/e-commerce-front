@@ -91,7 +91,7 @@ export default function PanierPage() {
           <div className="font-bold text-right">Total : {total} Ar</div>
 
           <div className="mt-6 border-t pt-4 space-y-4">
-            <h2 className="text-lg font-semibold">💳 Infos de paiement (simulation)</h2>
+            <h2 className="text-lg font-semibold">💳 Infos de paiement</h2>
 
             <div className="space-y-2">
               <label className="block text-sm">Nom du client</label>
