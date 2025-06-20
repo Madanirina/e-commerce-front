@@ -5,41 +5,39 @@ import { useRouter } from 'next/navigation'
 
 export default function RegisterPage() {
   const router = useRouter()
-
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleRegister = (e: React.FormEvent) => {
     e.preventDefault()
 
-    try {
-      const res = await fetch('http://localhost:3001/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          role: 'vendeur', // important : on inscrit en tant que vendeur
-        }),
-      })
+    const users = JSON.parse(localStorage.getItem('users') || '[]')
 
-      if (!res.ok) {
-        setError('Erreur pendant l’inscription')
-        return
-      }
-
-      const data = await res.json()
-      localStorage.setItem('token', data.token)
-
-      // Redirection vers le dashboard vendeur
-      router.push('/vendeur/dashboard')
-    } catch (err) {
-      console.error(err)
-      setError("Erreur de connexion au serveur.")
+    const userExists = users.some((u: any) => u.email === email)
+    if (userExists) {
+      setError('Cet email est déjà utilisé.')
+      return
     }
+
+    const newUser = {
+      id: Date.now().toString(),
+      name,
+      email,
+      password,
+      role: 'vendeur',
+    }
+
+    users.push(newUser)
+    localStorage.setItem('users', JSON.stringify(users))
+
+    // Simule une "connexion"
+    localStorage.setItem('token', 'fake-token')
+    localStorage.setItem('userId', newUser.id)
+    localStorage.setItem('role', 'vendeur')
+
+    router.push('/vendeur/dashboard')
   }
 
   return (

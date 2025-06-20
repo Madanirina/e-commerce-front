@@ -9,39 +9,26 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
 
-    try {
-      const res = await fetch('http://localhost:3001/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
+    const users = JSON.parse(localStorage.getItem('users') || '[]')
+    const user = users.find((u: any) => u.email === email && u.password === password)
 
-      if (!res.ok) {
-        setError('Identifiants invalides.')
-        return
-      }
+    if (!user) {
+      setError('Identifiants invalides.')
+      return
+    }
 
-      const data = await res.json()
-      localStorage.setItem('token', data.token)
+    // Simule le token, rôle, etc.
+    localStorage.setItem('token', 'fake-token')
+    localStorage.setItem('userId', user.id)
+    localStorage.setItem('role', user.role)
 
-      // Décode le rôle à partir du token si tu veux (facultatif)
-      const payload = JSON.parse(atob(data.token.split('.')[1]))
-      const role = payload.role
-
-      // Redirige selon le rôle
-      if (role === 'vendeur') {
-        router.push('/vendeur/dashboard')
-      } else if (role === 'admin') {
-        router.push('/admin/dashboard')
-      } else {
-        router.push('/')
-      }
-    } catch (err) {
-      console.error(err)
-      setError('Erreur de connexion.')
+    if (user.role === 'vendeur') {
+      router.push('/vendeur/dashboard')
+    } else {
+      router.push('/')
     }
   }
 

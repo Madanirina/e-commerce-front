@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 type Product = {
@@ -102,7 +103,6 @@ export default function VendeurDashboard() {
   return (
     <main className="p-6 max-w-3xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Dashboard Vendeur - Produits</h1>
-
       <section className="mb-8 border p-4 rounded shadow">
         <h2 className="text-xl font-semibold mb-4">Ajouter un produit</h2>
         <input
@@ -215,6 +215,9 @@ export default function VendeurDashboard() {
           ))}
         </ul>
       </section>
+      <Link href="/vendeur/commande" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          📦 Voir les commandes
+      </Link>
     </main>
   )
 }
