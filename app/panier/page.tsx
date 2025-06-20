@@ -48,7 +48,7 @@ export default function PanierPage() {
     localStorage.removeItem('my-cart')
     window.location.reload()
 
-    alert('💳 Paiement simulé avec succès ! Commande enregistrée.')
+    alert('💳 Paiement avec succès ! Commande enregistrée.')
     router.push('/')
   }
 
